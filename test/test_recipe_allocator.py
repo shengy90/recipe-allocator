@@ -1,7 +1,8 @@
-from definitions.test_jsons import(
+from definitions.test_jsons import (
     TEST_STOCK_DICT,
+    TEST_STOCK_4VEGE1GOURMET_DICT,
     TEST_DEFAULT_ORDERS_DICT,
-    TEST_DEFAULT_ORDERS_1_DICT
+    TEST_DEFAULT_ORDERS_1_DICT,
     )
 from src.recipe_allocator import *
 
@@ -23,6 +24,8 @@ def test_count_orders(test_orders: dict, box_type:str, expected_value_orders, ex
                          [
                              pytest.param(TEST_STOCK_DICT, "vegetarian", 67816),
                              pytest.param(TEST_STOCK_DICT, "gourmet", 186796),
+                             pytest.param(TEST_STOCK_4VEGE1GOURMET_DICT, "gourmet", 1),
+                             pytest.param(TEST_STOCK_4VEGE1GOURMET_DICT, "vegetarian", 4),
                          ])
 def test_count_stock(test_stock: dict, box_type: str, expected_value: int):
     assert count_stock(test_stock, box_type=box_type) == expected_value

@@ -55,3 +55,20 @@ def count_stock(input_dict: dict, box_type: str) -> int:
     return total_count
 
 
+def allocate_recipes(stock_dict: dict, orders_dict: dict, constraint_priority: dict) -> bool:
+    """
+    Function to allocate recipes, checking all constraints are met
+    :param stock_dict: input dictionary of stocks
+    :param orders_dict: input dictionary of orders
+    :param constraint_priority: input dictionary of constraint priorities
+    :return: True if all constraints are met, False if not all constraints are met
+    """
+    for constraint_order in constraint_priority:
+        constraint = constraint_priority[constraint_order]
+        assert assert_box_type(constraint)  # check that constraint is a valid box type
+
+        if constraint == "vegetarian":
+            box_type = orders_dict[constraint]
+
+
+

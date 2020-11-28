@@ -1,0 +1,34 @@
+{
+    "recipe_1": {
+        "stock_count": 20,
+        "box_type": "vegetarian"
+    },
+    "recipe_2": {
+        "stock_count": 20,
+        "box_type": "vegetarian"
+    },
+    "recipe_3": {
+        "stock_count": 20,
+        "box_type": "vegetarian"
+    },
+    "recipe_4": {
+        "stock_count": 20,
+        "box_type": "vegetarian"
+    },
+    "recipe_5": {
+        "stock_count": 20,
+        "box_type": "gourmet"
+    },
+    "recipe_6": {
+        "stock_count": 20,
+        "box_type": "gourmet"
+    },
+    "recipe_7": {
+        "stock_count": 20,
+        "box_type": "gourmet"
+    },
+    "recipe_8": {
+        "stock_count": 20,
+        "box_type": "gourmet"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "recipe_1": {
+        "stock_count": 1,
+        "box_type": "vegetarian"
+    },
+    "recipe_2": {
+        "stock_count": 1,
+        "box_type": "vegetarian"
+    },
+    "recipe_3": {
+        "stock_count": 1,
+        "box_type": "vegetarian"
+    },
+    "recipe_4": {
+        "stock_count": 1,
+        "box_type": "vegetarian"
+    },
+    "recipe_14": {
+        "stock_count": 1,
+        "box_type": "gourmet"
+    }
+}

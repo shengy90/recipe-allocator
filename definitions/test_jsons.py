@@ -13,6 +13,9 @@ test_default_order_1_json_path = os.path.join(parent_dir, 'bin', 'test_files', '
 
 # test stocks
 test_stock_json_path = os.path.join(parent_dir, 'bin', 'test_files', 'test_stock.json')
+test_stock_4vege1gourmet_json_path = os.path.join(parent_dir, 'bin', 'test_files', 'test_stock_4vege1gourmet.json')
+test_stock_4vege4gourmet20ea_json_path = os.path.join(parent_dir, 'bin', 'test_files', 'test_stock_4vege4gourmet20ea.json')
+
 
 with open(test_default_order_json_path) as json_file:
     TEST_DEFAULT_ORDERS_DICT = json.load(json_file)
@@ -22,3 +25,9 @@ with open(test_default_order_1_json_path) as json_file:
 
 with open(test_stock_json_path) as json_file:
     TEST_STOCK_DICT = json.load(json_file)
+
+with open(test_stock_4vege1gourmet_json_path) as json_file:
+    TEST_STOCK_4VEGE1GOURMET_DICT = json.load(json_file)
+
+with open(test_stock_4vege4gourmet20ea_json_path) as json_file:
+    TEST_STOCK_4VEGE4GOURMET20EA_DICT = json.load(json_file)
