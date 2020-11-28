@@ -1,3 +1,8 @@
+from utils.utils import (
+    extract_number_from_string
+    )
+
+
 def assert_box_type(box_type: str) -> bool:
     """
     Check that box_type must be either 'vegetarian' or 'gourmet'
@@ -7,31 +12,36 @@ def assert_box_type(box_type: str) -> bool:
     return True if box_type in ['vegetarian', 'gourmet'] else False
 
 
-def count_orders(input_dict: dict, box_type: str) -> int:
+def count_orders_and_boxes(input_dict: dict, box_type: str) -> int:
     """
     Count the total number of default orders for a given order type
-    :param input_dict: input dictionary
+    :param input_dict: input dictionary of orders
     :param box_type: box type - must either be 'vegetarian' or 'gourmet'
-    :return: total count
+    :return: total count of orders, total count of boxes
     """
 
     assert assert_box_type(box_type)
 
     recipes = list(input_dict[box_type])
-    total_count = 0
+    total_orders_count = 0
+    total_boxes_count = 0
     for recipe in recipes:
+        recipe_number = extract_number_from_string(recipe, "_")
         portions = list(input_dict[box_type][recipe])
         for portion in portions:
-            total_count += input_dict[box_type][recipe][portion]
+            portion_number = extract_number_from_string(portion, "_")
+            total_orders_count += input_dict[box_type][recipe][portion]
+            total_boxes_count += input_dict[box_type][recipe][portion] * recipe_number * portion_number
 
-    return total_count
+    return total_orders_count, total_boxes_count
 
 
 def count_stock(input_dict: dict, box_type: str) -> int:
     """
-    :param input_dict: input dictionary
+    Count the total number of stocks held in inventory
+    :param input_dict: input dictionary of stocks
     :param box_type: box type - must either be 'vegetarian' or 'gourmet'
-    :return: total count
+    :return: total count of stocks
     """
 
     assert assert_box_type(box_type)
@@ -43,4 +53,5 @@ def count_stock(input_dict: dict, box_type: str) -> int:
             total_count += input_dict[recipe]['stock_count']
 
     return total_count
+
 
