@@ -222,10 +222,10 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                     if selected_recipe_stock >= stock_required:
                         stock_dict = update_stock_levels(stock_dict, selected_recipe, allocated_stock)
                     else:
-                        # print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i+1}!")
+                        print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i+1}!")
                         break
                 else:
-                    # print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i + 1}!")
+                    print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i + 1}!")
                     break
 
                 # Save allocation
