@@ -1,4 +1,14 @@
 from word2number import w2n
+from num2word import word
+
+
+def assert_box_type(box_type: str) -> bool:
+    """
+    Check that box_type must be either 'vegetarian' or 'gourmet'
+    :param box_type: box type
+    :return: True if box_type is either 'vegetarian' or 'gourmet', else False
+    """
+    return True if box_type in ['vegetarian', 'gourmet'] else False
 
 
 def extract_number_from_string(string: str, delimiter: str = None) -> int:
@@ -12,22 +22,13 @@ def extract_number_from_string(string: str, delimiter: str = None) -> int:
     return w2n.word_to_num(number_word)
 
 
-def get_recipe_with_highest_stock(stock_dict: dict) -> str:
+def get_prioritised_list(input_list: list, suffix: str) -> list:
     """
-    Function to get the name of the recipe with the highest stock count
-    :param stock_dict: input dictionary of stock
-    :return: name of the recipe with the highest stock count
+    Function to prioritise input list in descending order
+    :param input_list: list, where elements are in the format two_xxxx, four_xxxxx, three_xxxxxx
+    :return: ordered list
     """
-    output_recipe_name = None
-    output_recipe_stock = 0
-
-    # Looping through each element of the stock dictionary
-    for recipe in stock_dict.keys():
-        # Get the stock level of the current recipe
-        recipe_stock = stock_dict[recipe]['stock_count']
-        # If the stock level of the current recipe is higher than previously read value(s), overwrite the recipe name
-        if recipe_stock > output_recipe_stock:
-            output_recipe_name = recipe
-            output_recipe_stock = recipe_stock # overwrite output_recipe_stock with new highest value
-
-    return output_recipe_name
+    intermediate_list = [extract_number_from_string(element, "_") for element in input_list]
+    intermediate_list.sort(reverse=True)
+    output_list = [f"{word(element).lower()}_{suffix}" for element in intermediate_list]
+    return output_list
