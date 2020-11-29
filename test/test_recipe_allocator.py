@@ -67,9 +67,10 @@ def test_update_stock_levels(stock_dict, recipe, allocated_stock, expected_value
     assert updated_stock[recipe]['stock_count'] == expected_value
 
 
-@pytest.mark.parametrize("orders_dict,expected_value",
+@pytest.mark.parametrize("orders_dict,constraints_priority,expected_value",
                          [
                              pytest.param(TEST_DEFAULT_ORDERS_DICT,
+                                          constraints_priority,
                                           ["vegetarian:four_recipes:four_portions",
                                            "vegetarian:three_recipes:four_portions",
                                            "vegetarian:two_recipes:four_portions",
@@ -86,5 +87,5 @@ def test_update_stock_levels(stock_dict, recipe, allocated_stock, expected_value
                                           ),
 
                          ])
-def test_compile_order_allocation_list(orders_dict, expected_value):
-    assert compile_order_allocation_list(orders_dict) == expected_value
+def test_compile_order_allocation_list(orders_dict, constraints_priority, expected_value):
+    assert compile_order_allocation_list(orders_dict, constraints_priority) == expected_value

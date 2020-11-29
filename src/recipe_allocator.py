@@ -71,12 +71,12 @@ def get_recipe_with_highest_stock_given_constraint(stock_dict: dict, constraint:
     return output_recipe_name, output_recipe_stock
 
 
-def compile_order_allocation_list(orders_dict: dict) -> list:
+def compile_order_allocation_list(orders_dict: dict, constraints_priority: dict) -> list:
     """
     Function to compile allocation list in prioritised order (first by constraints,
     then by number of recipes, then by number of portions" in which orders would be fulfilled.
     :param orders_dict: input order dictionary
-    :param constraint_priority: input dictionary of constraints ordered by priority
+    :param constraints_priority: input dictionary of constraints ordered by priority
     :return: ordered list by which orders would be fulfilled.
     """
     recipe_list = []
@@ -84,7 +84,8 @@ def compile_order_allocation_list(orders_dict: dict) -> list:
     output_list = []
     box_types = set(orders_dict.keys())
 
-    for box_type in box_types:
+    for constraint in constraints_priority:
+        box_type = constraints_priority[constraint]
         recipe_list.extend(list(orders_dict[box_type].keys()))
     recipe_types = get_prioritised_list(list(set(recipe_list)), "recipes")
 
@@ -127,8 +128,8 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
     :return: True if all constraints are met, False if not all constraints are met
     """
     stock_allocation_dict = orders_dict.copy()
-    testout = compile_order_allocation_list(orders_dict, constraints_priority)
-    print(testout)
+    order_allocation_list = compile_order_allocation_list(orders_dict, constraints_priority)
+    print(order_allocation_list)
     return stock_allocation_dict
 
 
