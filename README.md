@@ -31,4 +31,12 @@ python run.py --orders $orders --stocks $stocks
 - `$orders` and $stocks refer to the `orders` and `stocks` input JSON file you wish to read (without the `.json` extension)
 - script outputs stock allocations to `bin\outputs` folder with the name $orders_$stocks.json
 
-
+# Project Organisation
+⮑ bin/inputs : where input file goes   
+⮑ bin/outputs: where output file goes   
+⮑ bin/test_files: where test files for unit testing goes       
+⮑ definitions: where global variables are declared   
+⮑ src: where the main source code codes   
+⮑ recipe_allocator.py: algorithm for recipe allocation   
+⮑ constraints_checker.py: checking all constraints are met    
+⮑ run.py: run file that takes in 2 inputs: $orders and $stocks   
