@@ -4,6 +4,7 @@ from utils.utils import (
     get_prioritised_list
     )
 
+import copy
 import math
 
 
@@ -158,7 +159,7 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
     :param constraints_priority: input dictionary of constraint priorities
     :return: True if all constraints are met, False if not all constraints are met
     """
-    stock_allocation_dict = orders_dict.copy()
+    stock_allocation_dict = copy.deepcopy(orders_dict)
     order_allocation_list = compile_order_allocation_list(orders_dict, constraints_priority)
 
     for order_type in order_allocation_list:
@@ -170,13 +171,20 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
         portion_type = key_list[2]
         number_of_recipes_needed = extract_number_from_string(recipe_type, "_")
 
-        # Calculate stock requirements
-        stock_required, number_of_orders, number_of_portions = calculate_stock_requirements(orders_dict, box_type, recipe_type, portion_type)
-        outstanding_orders = number_of_orders
         stock_allocation_dict[box_type][recipe_type][portion_type] = {}
-
+        print("\n")
+        print("\n")
+        print(f"------- allocating stock for {box_type} {recipe_type} {portion_type} ------- ")
         for i in range(number_of_recipes_needed):
-
+            print(f" #### Recipe Number {i} ####")
+            stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"] = {}
+            # Calculate stock requirements
+            stock_required, number_of_orders, number_of_portions = calculate_stock_requirements(orders_dict,
+                                                                                                box_type,
+                                                                                                recipe_type,
+                                                                                                portion_type)
+            outstanding_orders = number_of_orders
+            print(f"Stock required: {stock_required}, number of orders: {number_of_orders}, number of portions: {number_of_portions}, outstanding_orders: {outstanding_orders}")
             # Set constraints for vegetarian box type
             constraint = "vegetarian" if box_type == "vegetarian" else None
 
@@ -193,28 +201,30 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
 
                 # Select available recipes
                 selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
-
+                print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}")
                 if selected_recipe is not None:
                     # Allocating stock
                     number_of_fulfilled_orders = min(math.floor(selected_recipe_stock / number_of_portions), outstanding_orders)
                     allocated_stock = number_of_fulfilled_orders * number_of_portions
                     outstanding_orders = max(outstanding_orders - number_of_fulfilled_orders, 0)
+
+                    print(f"fulfilled orders: {number_of_fulfilled_orders}, outstanding orders: {outstanding_orders}")
                     # Updating stock inventory
                     stock_dict = update_stock_levels(stock_dict, selected_recipe, allocated_stock)
 
                 elif count_loops > 1000:
                     # Print unexpected behaviour - we shouldn't encounter
-                    raise ValueError(f"Warning : More than 1000 loops encounted....")
+                    raise ValueError(f"Warning : More than 1000 loops encountered....")
 
                 else:
                     print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type}!")
                     break
 
                 # Save allocation
-                stock_allocation_dict[box_type][recipe_type][portion_type][f'selected_recipes_{count_allocated_recipe}'] = {}
-                stock_allocation_dict[box_type][recipe_type][portion_type][f'selected_recipes_{count_allocated_recipe}']['recipe_name'] = selected_recipe
-                stock_allocation_dict[box_type][recipe_type][portion_type][f'selected_recipes_{count_allocated_recipe}']['allocated_stock'] = allocated_stock
-                stock_allocation_dict[box_type][recipe_type][portion_type][f'selected_recipes_{count_allocated_recipe}']['recipe_box_type'] = selected_recipe_boxtype
+                stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}'] = {}
+                stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['recipe_name'] = selected_recipe
+                stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['allocated_stock'] = allocated_stock
+                stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['recipe_box_type'] = selected_recipe_boxtype
                 count_allocated_recipe += 1
                 count_loops += 1
 
