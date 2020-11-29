@@ -3,6 +3,7 @@ from definitions.test_jsons import (
     TEST_STOCK_4VEGE1GOURMET_DICT,
     TEST_DEFAULT_ORDERS_DICT,
     TEST_DEFAULT_ORDERS_1_DICT,
+    TEST_ORDERS_5_RECIPES,
     )
 from definitions.definitions import constraints_priority
 from src.recipe_allocator import *
@@ -15,6 +16,7 @@ import pytest
                              pytest.param(TEST_DEFAULT_ORDERS_DICT, "vegetarian", 67273, 584992),
                              pytest.param(TEST_DEFAULT_ORDERS_DICT, "gourmet", 184289, 1220712),
                              pytest.param(TEST_DEFAULT_ORDERS_1_DICT, "vegetarian", 6, 54),
+                             pytest.param(TEST_ORDERS_5_RECIPES, "gourmet", 17, 264),
                          ])
 def test_count_orders(test_orders: dict, box_type:str, expected_value_orders, expected_value_boxes: int):
     orders, boxes = count_orders_and_boxes(test_orders, box_type=box_type)
@@ -90,6 +92,26 @@ def test_update_stock_levels(stock_dict, recipe, allocated_stock, expected_value
                                            "gourmet:two_recipes:two_portions",
                                            ]
                                           ),
+                             pytest.param(TEST_ORDERS_5_RECIPES,
+                                          constraints_priority,
+                                          ["vegetarian:five_recipes:four_portions",
+                                           "vegetarian:four_recipes:four_portions",
+                                           "vegetarian:three_recipes:four_portions",
+                                           "vegetarian:two_recipes:four_portions",
+                                           "vegetarian:five_recipes:two_portions",
+                                           "vegetarian:four_recipes:two_portions",
+                                           "vegetarian:three_recipes:two_portions",
+                                           "vegetarian:two_recipes:two_portions",
+                                           "gourmet:five_recipes:four_portions",
+                                           "gourmet:four_recipes:four_portions",
+                                           "gourmet:three_recipes:four_portions",
+                                           "gourmet:two_recipes:four_portions",
+                                           "gourmet:five_recipes:two_portions",
+                                           "gourmet:four_recipes:two_portions",
+                                           "gourmet:three_recipes:two_portions",
+                                           "gourmet:two_recipes:two_portions",
+                                           ]
+                                          ),
 
                          ])
 def test_compile_order_allocation_list(orders_dict, constraints_priority, expected_value):
@@ -101,6 +123,7 @@ def test_compile_order_allocation_list(orders_dict, constraints_priority, expect
                              pytest.param(TEST_DEFAULT_ORDERS_DICT, "vegetarian", "two_recipes", "four_portions", 40032),
                              pytest.param(TEST_DEFAULT_ORDERS_DICT, "gourmet", "three_recipes", "four_portions", 48384),
                              pytest.param(TEST_DEFAULT_ORDERS_1_DICT, "vegetarian", "two_recipes", "two_portions", 2),
+                             pytest.param(TEST_ORDERS_5_RECIPES, "gourmet", "five_recipes", "four_portions", 40),
 
                          ])
 def test_calculate_stock_requirements(orders_dict, box_type, recipe_type, portion_type, expected_value):
