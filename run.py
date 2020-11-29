@@ -15,4 +15,5 @@ from src.recipe_allocator import (
 if __name__ == "__main__":
     stock = TEST_STOCK_4VEGE4GOURMET20EA_DICT
     orders = TEST_DEFAULT_ORDERS_1_DICT
-    allocate_recipes(stock, orders, constraints_priority)
+    allocated_orders = allocate_recipes(stock, orders, constraints_priority)
+    print(allocated_orders)

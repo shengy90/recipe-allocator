@@ -52,8 +52,8 @@ def test_count_stock(test_stock: dict, box_type: str, expected_value: int):
                              ),
                              pytest.param(TEST_STOCK_DICT, "vegetarian", "recipe_6", 43705),
                          ])
-def get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, expected_recipe_value, expected_stock_value):
-    output_recipe_name, output_recipe_stock = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
+def test_get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, expected_recipe_value, expected_stock_value):
+    output_recipe_name, output_recipe_stock, output_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
     assert output_recipe_name == expected_recipe_value and output_recipe_stock == expected_stock_value
 
 
@@ -89,3 +89,15 @@ def test_update_stock_levels(stock_dict, recipe, allocated_stock, expected_value
                          ])
 def test_compile_order_allocation_list(orders_dict, constraints_priority, expected_value):
     assert compile_order_allocation_list(orders_dict, constraints_priority) == expected_value
+
+
+@pytest.mark.parametrize("orders_dict,box_type,recipe_type,portion_type,expected_value",
+                         [
+                             pytest.param(TEST_DEFAULT_ORDERS_DICT, "vegetarian", "two_recipes", "four_portions", 40032),
+                             pytest.param(TEST_DEFAULT_ORDERS_DICT, "gourmet", "three_recipes", "four_portions", 48384),
+                             pytest.param(TEST_DEFAULT_ORDERS_1_DICT, "vegetarian", "two_recipes", "two_portions", 2),
+
+                         ])
+def test_calculate_stock_requirements(orders_dict, box_type, recipe_type, portion_type, expected_value):
+    stock_required, number_of_orders, number_of_portions = calculate_stock_requirements(orders_dict, box_type, recipe_type, portion_type)
+    assert stock_required == expected_value

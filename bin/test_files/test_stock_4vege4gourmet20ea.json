@@ -30,5 +30,13 @@
     "recipe_8": {
         "stock_count": 20,
         "box_type": "gourmet"
+    },
+    "recipe_9": {
+        "stock_count": 20,
+        "box_type": "vegetarian"
+    },
+    "recipe_10": {
+        "stock_count": 5,
+        "box_type": "vegetarian"
     }
 }
