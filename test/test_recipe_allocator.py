@@ -4,6 +4,7 @@ from definitions.test_jsons import (
     TEST_DEFAULT_ORDERS_DICT,
     TEST_DEFAULT_ORDERS_1_DICT,
     )
+from definitions.definitions import constraints_priority
 from src.recipe_allocator import *
 
 import pytest
@@ -64,3 +65,26 @@ def get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, expec
 def test_update_stock_levels(stock_dict, recipe, allocated_stock, expected_value):
     updated_stock = update_stock_levels(stock_dict, recipe, allocated_stock)
     assert updated_stock[recipe]['stock_count'] == expected_value
+
+
+@pytest.mark.parametrize("orders_dict,expected_value",
+                         [
+                             pytest.param(TEST_DEFAULT_ORDERS_DICT,
+                                          ["vegetarian:four_recipes:four_portions",
+                                           "vegetarian:three_recipes:four_portions",
+                                           "vegetarian:two_recipes:four_portions",
+                                           "vegetarian:four_recipes:two_portions",
+                                           "vegetarian:three_recipes:two_portions",
+                                           "vegetarian:two_recipes:two_portions",
+                                           "gourmet:four_recipes:four_portions",
+                                           "gourmet:three_recipes:four_portions",
+                                           "gourmet:two_recipes:four_portions",
+                                           "gourmet:four_recipes:two_portions",
+                                           "gourmet:three_recipes:two_portions",
+                                           "gourmet:two_recipes:two_portions",
+                                           ]
+                                          ),
+
+                         ])
+def test_compile_order_allocation_list(orders_dict, expected_value):
+    assert compile_order_allocation_list(orders_dict) == expected_value

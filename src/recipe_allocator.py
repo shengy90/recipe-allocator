@@ -71,6 +71,36 @@ def get_recipe_with_highest_stock_given_constraint(stock_dict: dict, constraint:
     return output_recipe_name, output_recipe_stock
 
 
+def compile_order_allocation_list(orders_dict: dict) -> list:
+    """
+    Function to compile allocation list in prioritised order (first by constraints,
+    then by number of recipes, then by number of portions" in which orders would be fulfilled.
+    :param orders_dict: input order dictionary
+    :param constraint_priority: input dictionary of constraints ordered by priority
+    :return: ordered list by which orders would be fulfilled.
+    """
+    recipe_list = []
+    portion_list = []
+    output_list = []
+    box_types = set(orders_dict.keys())
+
+    for box_type in box_types:
+        recipe_list.extend(list(orders_dict[box_type].keys()))
+    recipe_types = get_prioritised_list(list(set(recipe_list)), "recipes")
+
+    for recipe_type in recipe_types:
+        portion_list.extend(list(orders_dict[box_type][recipe_type].keys()))
+    portion_types = get_prioritised_list(list(set(portion_list)), "portions")
+
+    # Prioritising order list
+    for box_type in box_types:
+        for portion_type in portion_types:
+            for recipe_type in recipe_types:
+                output_list.append(f"{box_type}:{recipe_type}:{portion_type}")
+
+    return output_list
+
+
 def update_stock_levels(stock_dict: dict, recipe: str, allocated_stock: int) -> dict:
     """
     Function to update stock inventory levels after each iteration of allocation. Note - function only allows
@@ -88,36 +118,17 @@ def update_stock_levels(stock_dict: dict, recipe: str, allocated_stock: int) -> 
     return stock_dict
 
 
-def allocate_recipes(stock_dict: dict, orders_dict: dict, constraint_priority: dict) -> bool:
+def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: dict) -> bool:
     """
     Function to allocate recipes, checking all constraints are met
     :param stock_dict: input dictionary of stocks
     :param orders_dict: input dictionary of orders
-    :param constraint_priority: input dictionary of constraint priorities
+    :param constraints_priority: input dictionary of constraint priorities
     :return: True if all constraints are met, False if not all constraints are met
     """
     stock_allocation_dict = orders_dict.copy()
-
-    for priority in constraint_priority:
-        constraint = constraint_priority[priority]
-        number_of_recipes = list(orders_dict[constraint].keys())
-        prioritised_recipe_list = get_prioritised_list(number_of_recipes, "recipes")
-
-        for recipe in prioritised_recipe_list:
-            number_of_portions = list(orders_dict[constraint][recipe])
-            prioritised_portion_list = get_prioritised_list(number_of_portions, "portions")
-
-            for portion in prioritised_portion_list:
-
-                print(f"Allocating: {constraint} {recipe} {portion}")
-                number_of_orders = orders_dict[constraint][recipe][portion]
-                stock_required = number_of_orders * extract_number_from_string(portion, "_")
-
-                shortlisted_recipe, \
-                shortlisted_recipe_stock = get_recipe_with_highest_stock_given_constraint(
-                    stock_dict,
-                    constraint)
-                print(number_of_orders, stock_required, shortlisted_recipe, shortlisted_recipe_stock)
+    testout = compile_order_allocation_list(orders_dict, constraints_priority)
+    print(testout)
     return stock_allocation_dict
 
 

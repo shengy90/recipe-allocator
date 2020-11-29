@@ -26,3 +26,5 @@ def test_extract_number_from_string(string, delimiter, expected_value):
                          ])
 def test_get_prioritised_list(input_list, suffix, expected_value):
     assert get_prioritised_list(input_list, suffix) == expected_value
+
+

@@ -32,3 +32,5 @@ def get_prioritised_list(input_list: list, suffix: str) -> list:
     intermediate_list.sort(reverse=True)
     output_list = [f"{word(element).lower()}_{suffix}" for element in intermediate_list]
     return output_list
+
+
