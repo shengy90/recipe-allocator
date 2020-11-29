@@ -205,15 +205,15 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
 
                 # Select available recipes
                 selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, selected_recipe_list)
-                # print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}")
+                number_of_fulfilled_orders = min(math.floor(selected_recipe_stock / number_of_portions), outstanding_orders)
+                # print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}, number_of_fulfilled_orders={number_of_fulfilled_orders}")
 
                 if count_loops > 10:
-                    print(f"Warning: Ran out of stock to fulfil order type: {box_type} {recipe_type} {portion_type}")
+                    raise ValueError("Error! More than 10 loops! 😲")
                     break
 
-                if selected_recipe is not None:
+                if selected_recipe is not None and number_of_fulfilled_orders > 0:
                     # Allocating stock
-                    number_of_fulfilled_orders = min(math.floor(selected_recipe_stock / number_of_portions), outstanding_orders)
                     allocated_stock = number_of_fulfilled_orders * number_of_portions
                     outstanding_orders = max(outstanding_orders - number_of_fulfilled_orders, 0)
 
@@ -228,7 +228,9 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                         stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['recipe_box_type'] = selected_recipe_boxtype
                         stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['allocated_stock'] = allocated_stock
                         stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['outstanding_orders'] = outstanding_orders
-
+                else:
+                    print(f"Warning: Ran out of stock to fulfil order type: {box_type} {recipe_type} {portion_type}")
+                    break
 
     return stock_allocation_dict
 
