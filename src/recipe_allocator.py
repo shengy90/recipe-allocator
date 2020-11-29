@@ -45,17 +45,20 @@ def count_stock(input_dict: dict, box_type: str) -> int:
     recipes = list(input_dict.keys())
     total_count = 0
     for recipe in recipes:
+        print(recipe)
         if input_dict[recipe]['box_type'] == box_type:
+            print(input_dict[recipe])
             total_count += input_dict[recipe]['stock_count']
-
+            print(total_count)
     return total_count
 
 
-def get_recipe_with_highest_stock_given_constraint(stock_dict: dict, constraint: str = None) -> str:
+def get_recipe_with_highest_stock_given_constraint(stock_dict: dict, constraint: str = None, existing_recipe_list: list = []) -> str:
     """
     Function to get the name of the recipe with the highest stock count
     :param stock_dict: input dictionary of stock
     :param constraint: box type
+    :param existing_recipe_list: existing recipes already selected for the order type
     :return: name of the recipe with the highest stock count
     """
     output_recipe_name = None
@@ -71,14 +74,14 @@ def get_recipe_with_highest_stock_given_constraint(stock_dict: dict, constraint:
         # If the stock level of the current recipe is higher than previously read value(s), overwrite the recipe name
 
         # If no constraint is applied, select any recipe that meets criteria
-        if constraint is None:
+        if constraint is None and recipe not in existing_recipe_list:
             if recipe_stock > output_recipe_stock:
                 output_recipe_name = recipe
                 output_recipe_stock = recipe_stock
                 output_recipe_boxtype = recipe_boxtype
         # Otherwise if a constraint was specified, only select recipes that satisfies the constraint
         else:
-            if recipe_stock > output_recipe_stock and stock_dict[recipe]['box_type'] == constraint:
+            if recipe_stock > output_recipe_stock and stock_dict[recipe]['box_type'] == constraint and recipe not in existing_recipe_list:
                 output_recipe_name = recipe
                 output_recipe_stock = recipe_stock  # overwrite output_recipe_stock with new highest value
                 output_recipe_boxtype = recipe_boxtype
@@ -171,7 +174,9 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
         portion_type = key_list[2]
         number_of_recipes_needed = extract_number_from_string(recipe_type, "_")
 
+        selected_recipe_list = []
         stock_allocation_dict[box_type][recipe_type][portion_type] = {}
+
         print("\n")
         print("\n")
         print(f"------- allocating stock for {box_type} {recipe_type} {portion_type} ------- ")
@@ -203,7 +208,7 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                 count_loops += 1
 
                 # Select available recipes
-                selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
+                selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, selected_recipe_list)
                 print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}")
 
                 if count_loops > 50:
@@ -227,6 +232,7 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                     break
 
                 # Save allocation
+                selected_recipe_list.append(selected_recipe)
                 stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}'] = {}
                 stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['recipe_name'] = selected_recipe
                 stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['allocated_stock'] = allocated_stock

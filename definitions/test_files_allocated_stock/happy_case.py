@@ -4,7 +4,7 @@ HAPPY_CASE = {
       "two_portions": {
         "recipe_number_1": {
           "selected_recipes_1": {
-            "recipe_name": "recipe_1",
+            "recipe_name": "recipe_9",
             "allocated_stock": 2,
             "recipe_box_type": "vegetarian"
           }
@@ -38,7 +38,7 @@ HAPPY_CASE = {
       "two_portions": {
         "recipe_number_1": {
           "selected_recipes_1": {
-            "recipe_name": "recipe_3",
+            "recipe_name": "recipe_9",
             "allocated_stock": 2,
             "recipe_box_type": "vegetarian"
           }
@@ -52,7 +52,7 @@ HAPPY_CASE = {
         },
         "recipe_number_3": {
           "selected_recipes_1": {
-            "recipe_name": "recipe_9",
+            "recipe_name": "recipe_1",
             "allocated_stock": 2,
             "recipe_box_type": "vegetarian"
           }
@@ -93,21 +93,21 @@ HAPPY_CASE = {
         },
         "recipe_number_2": {
           "selected_recipes_1": {
-            "recipe_name": "recipe_9",
+            "recipe_name": "recipe_1",
             "allocated_stock": 2,
             "recipe_box_type": "vegetarian"
           }
         },
         "recipe_number_3": {
           "selected_recipes_1": {
-            "recipe_name": "recipe_1",
+            "recipe_name": "recipe_2",
             "allocated_stock": 2,
             "recipe_box_type": "vegetarian"
           }
         },
         "recipe_number_4": {
           "selected_recipes_1": {
-            "recipe_name": "recipe_2",
+            "recipe_name": "recipe_3",
             "allocated_stock": 2,
             "recipe_box_type": "vegetarian"
           }

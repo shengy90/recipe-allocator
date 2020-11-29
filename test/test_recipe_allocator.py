@@ -32,13 +32,14 @@ def test_count_stock(test_stock: dict, box_type: str, expected_value: int):
     assert count_stock(test_stock, box_type=box_type) == expected_value
 
 
-@pytest.mark.parametrize("stock_dict,constraint,expected_recipe_value,expected_stock_value",
+@pytest.mark.parametrize("stock_dict,constraint,existing_recipe_list,expected_recipe_value,,expected_stock_value",
                          [
                              pytest.param(
                                  {"recipe_3": {"stock_count": 10, "box_type": "vegetarian"},
                                   "recipe_5": {"stock_count": 20, "box_type": "vegetarian"},
                                   "recipe_7": {"stock_count": 30, "box_type": "vegetarian"}},
                                  "vegetarian",
+                                 [],
                                  "recipe_7",
                                  30
                              ),
@@ -47,13 +48,17 @@ def test_count_stock(test_stock: dict, box_type: str, expected_value: int):
                                   "recipe_03": {"stock_count": 20, "box_type": "vegetarian"},
                                   "recipe_46": {"stock_count": 10, "box_type": "vegetarian"}},
                                  "vegetarian",
+                                 [],
                                  "recipe_19",
                                  50
                              ),
-                             pytest.param(TEST_STOCK_DICT, "vegetarian", "recipe_6", 43705),
+                             pytest.param(TEST_STOCK_DICT, "vegetarian", [], "recipe_6", 43705),
+                             pytest.param(TEST_STOCK_DICT, "vegetarian", "recipe_6", "recipe_4", 11217),
+                             pytest.param(TEST_STOCK_DICT, "vegetarian", "recipe_6", "recipe_6", 43705, marks=pytest.mark.xfail(raises=AssertionError)),
+
                          ])
-def test_get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, expected_recipe_value, expected_stock_value):
-    output_recipe_name, output_recipe_stock, output_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
+def test_get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, existing_recipe_list, expected_recipe_value, expected_stock_value):
+    output_recipe_name, output_recipe_stock, output_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, existing_recipe_list)
     assert output_recipe_name == expected_recipe_value and output_recipe_stock == expected_stock_value
 
 
