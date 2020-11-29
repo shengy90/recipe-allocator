@@ -190,7 +190,7 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
             # manually break the program and raise error if > 1000 loops - we should never ever see this error!
 
             while outstanding_orders > 0:
-                
+
                 # Select available recipes
                 selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
 
