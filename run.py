@@ -70,4 +70,9 @@ if __name__ == "__main__":
         json_file.write(json_string)
 
     all_constraints_met = constraint_1 is True and constraint_2 is True and constraint_3 is True
-    print(f"All constraints met: {all_constraints_met}")
+
+    if all_constraints_met is True:
+        print(f"All constraints met: {all_constraints_met}")
+    else:
+        print(f"constraint_1: {constraint_1}, constraint_2: {constraint_2}, constraint_3: {constraint_3}")
+
