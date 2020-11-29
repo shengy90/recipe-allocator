@@ -28,10 +28,10 @@ def parse_args(argument):
     )
 
     parser.add_argument('--orders', nargs=1, required=True,
-                        help="Name of orders input file (JSON)")
+                        help="Name of orders input file without the .json extension")
 
     parser.add_argument('--stocks', nargs=1, required=True,
-                        help="Name of stocks input file (JSON)")
+                        help="Name of stocks input file without the .json extension")
 
     return parser.parse_args(argument)
 
