@@ -45,11 +45,8 @@ def count_stock(input_dict: dict, box_type: str) -> int:
     recipes = list(input_dict.keys())
     total_count = 0
     for recipe in recipes:
-        print(recipe)
         if input_dict[recipe]['box_type'] == box_type:
-            print(input_dict[recipe])
             total_count += input_dict[recipe]['stock_count']
-            print(total_count)
     return total_count
 
 
@@ -177,11 +174,11 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
         selected_recipe_list = []
         stock_allocation_dict[box_type][recipe_type][portion_type] = {}
 
-        print("\n")
-        print("\n")
-        print(f"------- allocating stock for {box_type} {recipe_type} {portion_type} ------- ")
+        # print("\n")
+        # print("\n")
+        # print(f"------- allocating stock for {box_type} {recipe_type} {portion_type} ------- ")
         for i in range(number_of_recipes_needed):
-            print(f" #### Recipe Number {i} ####")
+            # print(f" #### Recipe Number {i} ####")
             stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"] = {}
             # Calculate stock requirements
             stock_required, number_of_orders, number_of_portions = calculate_stock_requirements(orders_dict,
@@ -189,7 +186,7 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                                                                                                 recipe_type,
                                                                                                 portion_type)
             outstanding_orders = number_of_orders
-            print(f"Stock required: {stock_required}, number of orders: {number_of_orders}, number of portions: {number_of_portions}, outstanding_orders: {outstanding_orders}")
+            # print(f"Stock required: {stock_required}, number of orders: {number_of_orders}, number of portions: {number_of_portions}, outstanding_orders: {outstanding_orders}")
             # Set constraints for vegetarian box type
             constraint = "vegetarian" if box_type == "vegetarian" else None
 
@@ -209,7 +206,7 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
 
                 # Select available recipes
                 selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint, selected_recipe_list)
-                print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}")
+                # print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}")
 
                 if count_loops > 50:
                     raise ValueError(f"Warning : More than 500 loops encountered....")
@@ -220,15 +217,15 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                     allocated_stock = number_of_fulfilled_orders * number_of_portions
                     outstanding_orders = max(outstanding_orders - number_of_fulfilled_orders, 0)
 
-                    print(f"fulfilled orders: {number_of_fulfilled_orders}, outstanding orders: {outstanding_orders}")
+                    # print(f"fulfilled orders: {number_of_fulfilled_orders}, outstanding orders: {outstanding_orders}")
                     # Updating stock inventory
                     if selected_recipe_stock >= stock_required:
                         stock_dict = update_stock_levels(stock_dict, selected_recipe, allocated_stock)
                     else:
-                        print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i+1}!")
+                        # print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i+1}!")
                         break
                 else:
-                    print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i + 1}!")
+                    # print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i + 1}!")
                     break
 
                 # Save allocation
