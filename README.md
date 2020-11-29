@@ -39,6 +39,6 @@ python run.py --orders $orders --stocks $stocks
 ⮑ src: where the main source code codes.   
 ⮑ recipe_allocator.py: algorithm for recipe allocation.   
 ⮑ constraints_checker.py: checking all constraints are met.   
-⮑ test: where unit test goes. test files are named in the following convention `test_name`.py, where `name` refers to the corresponding source code file.
-⮑ utils: where utility function goes.
+⮑ test: where unit test goes. test files are named in the following convention `test_name`.py, where `name` refers to the corresponding source code file.   
+⮑ utils: where utility function goes.   
 ⮑ run.py: run file that takes in 2 inputs: $orders and $stocks.   
