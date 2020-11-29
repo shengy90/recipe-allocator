@@ -51,6 +51,8 @@ def check_available_stock(stock_dict: dict, orders_dict: dict)-> bool:
 
     remaining_vegetarian_stock = max(vegetarian_stock - vegetarian_boxes, 0)
     gourmet_available_stock = gourmet_stock + remaining_vegetarian_stock
+    print(f"Vegetarian stock required: {vegetarian_boxes}. Vegetarian stock available: {vegetarian_stock}")
+    print(f"Gourmet stock required: {gourmet_boxes}. Gourmet stock available: {gourmet_available_stock}")
 
     return True if vegetarian_stock >= vegetarian_boxes and gourmet_available_stock >= gourmet_boxes else False
 
