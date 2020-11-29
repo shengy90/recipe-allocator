@@ -189,19 +189,26 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
             constraint = "vegetarian" if box_type == "vegetarian" else None
 
             # Counter for number of recipes allocated per order
-            count_allocated_recipe = 1
+            count_allocated_recipe = 0
             count_loops = 0
 
             # While loop to keep allocating stock to orders until:
             # all orders per order type is fulfilled (outstanding orders == 0) or
             # we have ran out of stock in which case the while loop will break
-            # manually break the program and raise error if > 1000 loops - we should never ever see this error!
+            # manually break the program and raise error if > 50 loops - we should never ever see this error!
 
             while outstanding_orders > 0:
+
+                count_allocated_recipe += 1
+                count_loops += 1
 
                 # Select available recipes
                 selected_recipe, selected_recipe_stock, selected_recipe_boxtype = get_recipe_with_highest_stock_given_constraint(stock_dict, constraint)
                 print(f"selected recipe: {selected_recipe}, available_stock: {selected_recipe_stock}, selected boxtype: {selected_recipe_boxtype}")
+
+                if count_loops > 50:
+                    raise ValueError(f"Warning : More than 500 loops encountered....")
+
                 if selected_recipe is not None:
                     # Allocating stock
                     number_of_fulfilled_orders = min(math.floor(selected_recipe_stock / number_of_portions), outstanding_orders)
@@ -210,14 +217,13 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
 
                     print(f"fulfilled orders: {number_of_fulfilled_orders}, outstanding orders: {outstanding_orders}")
                     # Updating stock inventory
-                    stock_dict = update_stock_levels(stock_dict, selected_recipe, allocated_stock)
-
-                elif count_loops > 1000:
-                    # Print unexpected behaviour - we shouldn't encounter
-                    raise ValueError(f"Warning : More than 1000 loops encountered....")
-
+                    if selected_recipe_stock >= stock_required:
+                        stock_dict = update_stock_levels(stock_dict, selected_recipe, allocated_stock)
+                    else:
+                        print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i+1}!")
+                        break
                 else:
-                    print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type}!")
+                    print(f"Warning... Ran out of stock for order type {box_type} {recipe_type} {portion_type} recipe_number_{i + 1}!")
                     break
 
                 # Save allocation
@@ -225,8 +231,6 @@ def allocate_recipes(stock_dict: dict, orders_dict: dict, constraints_priority: 
                 stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['recipe_name'] = selected_recipe
                 stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['allocated_stock'] = allocated_stock
                 stock_allocation_dict[box_type][recipe_type][portion_type][f"recipe_number_{i+1}"][f'selected_recipes_{count_allocated_recipe}']['recipe_box_type'] = selected_recipe_boxtype
-                count_allocated_recipe += 1
-                count_loops += 1
 
     return stock_allocation_dict
 
